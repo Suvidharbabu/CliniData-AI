@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agents | CliniData AI</title>
+  <meta name="description" content="The specialist AI agents behind CliniData AI and the human-in-the-loop controls that govern them.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Agentic AI</span>
+      <h1>Specialist agents, human decisions</h1>
+      <p class="lead">A planning orchestrator splits each compliance question into sub-tasks for specialist agents. Every step is logged,
+        and no CRITICAL or HIGH finding leads to action without a named human approver.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Agent roster</h2>
+      <p class="muted"><span class="badge badge-ok">Live</span> runs in the demo pipeline &nbsp; <span class="badge">Design</span> part of the production design</p>
+      <div class="grid grid-3" style="margin-top:16px">
+        <div class="card"><div class="card-header"><h3>Compliance Orchestrator</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Parses intent, scopes frameworks and articles, selects codebook instructions, plans the run and combines the results.</p></div>
+        <div class="card"><div class="card-header"><h3>Regulatory Gap Mapper</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Walks Regulation → Obligation → Control → Evidence to find obligations with no control, ineffective controls or missing evidence.</p></div>
+        <div class="card"><div class="card-header"><h3>Constraint Verifier</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Checks numeric deadlines: a 15-day SUSAR SOP against ICH E2A's 7-day fatal track, a 30-day breach SOP against GDPR's 72 hours.</p></div>
+        <div class="card"><div class="card-header"><h3>Cross-Reference Agent</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Follows <code>MAPS_TO</code> edges to find compound obligations: controls that satisfy one framework but fail a stricter equivalent.</p></div>
+        <div class="card"><div class="card-header"><h3>Risk Scorer</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Residual risk = likelihood × impact × (1 − best control effectiveness), propagated from risks to the obligations they threaten.</p></div>
+        <div class="card"><div class="card-header"><h3>Regulatory Reporter</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">Claude writes the narrative analysis from the subgraph, citing a node ID for every claim, and the hallucination guard checks each one.</p></div>
+        <div class="card"><div class="card-header"><h3>Remediation Planner</h3><span class="badge badge-ok">Live</span></div>
+          <p class="muted">After approval, creates remediation tasks with a policy-update template and a deadline set by severity.</p></div>
+        <div class="card"><div class="card-header"><h3>Audit Tracer</h3><span class="badge">Design</span></div>
+          <p class="muted">Assembles evidence bundles linking controls to obligations to source documents, with hash verification for inspections.</p></div>
+        <div class="card"><div class="card-header"><h3>Change Impact Agent</h3><span class="badge">Design</span></div>
+          <p class="muted">Diffs newly published guidance (e.g. ICH E6(R2) → E6(R3)) and ranks the controls it affects.</p></div>
+        <div class="card"><div class="card-header"><h3>Alert &amp; Escalation Agent</h3><span class="badge">Design</span></div>
+          <p class="muted">Watches for threshold breaches and regulatory changes and routes notifications to Jira, Slack or email.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Walkthrough</span>
+        <h2>"Show all HIPAA §164.312 gaps"</h2>
+        <p class="lead">What happens between the question and the approval queue.</p>
+      </div>
+      <ol class="steps">
+        <li><strong>Orchestrator</strong><span class="muted">Scopes the question to HIPAA §164.312 and selects instructions such as "Addressable is not optional" and "Encryption coverage by device class".</span></li>
+        <li><strong>Retriever</strong><span class="muted">Runs HyDE, dense and sparse retrieval, RRF and reranking to pick the top 10 obligation, control and policy chunks.</span></li>
+        <li><strong>Graph traversal</strong><span class="muted">Pulls every §164.312 obligation, their controls, evidence and risks, plus mapped Part 11 and ISO 27001 obligations.</span></li>
+        <li><strong>Gap Mapper</strong><span class="muted">Automatic logoff has no control, and laptop encryption is only partly rolled out.</span></li>
+        <li><strong>Constraint Verifier &amp; Cross-Reference</strong><span class="muted">Checks deadlines and compound gaps across the mapped frameworks.</span></li>
+        <li><strong>Risk Scorer</strong><span class="muted">Scores residual risk for unattended clinic workstations and lost unencrypted laptops.</span></li>
+        <li><strong>Reporter &amp; guard</strong><span class="muted">Claude writes the cited analysis, and any citation that is not in the subgraph is flagged.</span></li>
+        <li><strong>Approval gate</strong><span class="muted">HIGH gaps go to a senior compliance manager and CRITICAL gaps to the CCO, with a 3-day deadline and escalation.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Governance</span>
+      <h2>Human-in-the-loop controls</h2>
+      <div class="grid grid-3" style="margin-top:16px">
+        <div class="card"><h3>Mandatory approval</h3><p class="muted">CRITICAL and HIGH gaps need human approval before any remediation runs, and the check is enforced in the service layer.</p></div>
+        <div class="card"><h3>Full context for approvers</h3><p class="muted">Each request shows the gap summary, AI reasoning, confidence, risk level and recommended remediation, with a 3-day deadline.</p></div>
+        <div class="card"><h3>Immutable decisions</h3><p class="muted">Approver identity, role, timestamp, comments and AI confidence are logged in an append-only audit trail.</p></div>
+        <div class="card"><h3>Automatic escalation</h3><p class="muted">Overdue requests escalate to the next role level, ending with the Chief Compliance Officer.</p></div>
+        <div class="card"><h3>Replayable traces</h3><p class="muted">Every graph query, prompt version, model, response hash and intermediate output is stored with the run.</p></div>
+        <div class="card"><h3>Role separation</h3><p class="muted">Compliance officers ask, compliance managers and the CCO decide, and auditors read, as enforced by RBAC.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

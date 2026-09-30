@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roadmap | CliniData AI</title>
+  <meta name="description" content="The 12-month implementation roadmap for CliniData AI, from foundation to production scale.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Roadmap</span>
+      <h1>Twelve months to production</h1>
+      <p class="lead">Four phases, starting with the core clinical frameworks and scaling out to the full regulatory portfolio of a life-sciences enterprise.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:start">
+      <div>
+        <div class="phase">
+          <span class="badge badge-primary">Months 1–3</span>
+          <h2 style="margin-top:8px">Phase 1: Foundation</h2>
+          <ul>
+            <li>Infrastructure: PostgreSQL, Neo4j, Pinecone, sparse search, queues, API skeleton.</li>
+            <li>User &amp; access management: RBAC, JWT, MFA, SSO.</li>
+            <li>Ingestion pipeline: OCR, clause-aware chunking, NER, graph loader, dual embeddings.</li>
+            <li>Initial graph for HIPAA, GDPR (health data) and 21 CFR Part 11.</li>
+            <li>Basic hybrid retrieval: HyDE, dense + sparse, RRF.</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <span class="badge badge-primary">Months 4–6</span>
+          <h2 style="margin-top:8px">Phase 2: Core intelligence</h2>
+          <ul>
+            <li>Adaptive instruction codebook with semantic routing and EMA feedback.</li>
+            <li>Control registry and risk register.</li>
+            <li>Orchestrator plus Gap Mapper, Constraint Verifier, Cross-Reference and Risk Scorer agents.</li>
+            <li>Cross-encoder reranker fine-tuned on clinical compliance document pairs.</li>
+            <li>Compliance dashboard with graph visualisation; Audit Tracer and evidence bundles.</li>
+            <li>APM, metrics and structured agent tracing.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="phase">
+          <span class="badge badge-primary">Months 7–9</span>
+          <h2 style="margin-top:8px">Phase 3: Enterprise features</h2>
+          <ul>
+            <li>Human approval module with deadlines, escalation and immutable decision logs.</li>
+            <li>Remediation Planner and remediation workflow.</li>
+            <li>Regulatory change monitor with the Change Impact Agent (FDA, EMA, HHS, MeitY feeds).</li>
+            <li>Alerting through Jira, Slack and email; async reporting.</li>
+            <li>Multi-tenant isolation, data residency and encryption at rest.</li>
+            <li>Penetration testing, security audit, SOC 2 Type II readiness.</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <span class="badge badge-primary">Months 10–12</span>
+          <h2 style="margin-top:8px">Phase 4: Scale &amp; production</h2>
+          <ul>
+            <li>Read replicas for Postgres and Neo4j.</li>
+            <li>Queue-lag-based autoscaling and GPU workers for embeddings.</li>
+            <li>Library extended to ICH E6(R3), ICH E2A/E2B, EU CTR 536/2014, DPDP Act, CDSCO and ISO 27001.</li>
+            <li>CI/CD maturity, incident playbooks, DR rehearsal, go-live.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-band">
+        <h2>See the Phase 2 intelligence working today</h2>
+        <p>The live demo already runs hybrid retrieval, graph traversal, five specialist agents, the codebook and the approval gate.</p>
+        <div class="btn-row"><a class="btn btn-primary" href="/demo.html">Open the demo</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

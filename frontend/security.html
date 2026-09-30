@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security &amp; Governance | CliniData AI</title>
+  <meta name="description" content="Security architecture, audit and data governance, and non-functional requirements for CliniData AI.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Security &amp; governance</span>
+      <h1>Built for inspectors and auditors</h1>
+      <p class="lead">Health data demands tenant isolation, encryption and a trail for every AI decision. These are the controls CliniData AI is designed around.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:start">
+      <div class="card">
+        <h2>Security architecture</h2>
+        <ul class="stack" style="padding-left:1.1rem;margin:0">
+          <li>TLS 1.3 at the edge; internal service traffic encrypted.</li>
+          <li>Short-lived JWTs (15 min) with refresh-token rotation; stateless API scaling.</li>
+          <li>RBAC and object-level checks at the service layer, so a user bound to one tenant cannot read another tenant's records even with a guessed ID.</li>
+          <li>MFA mandatory for Admin, CCO and Compliance Officer roles.</li>
+          <li>PHI and sensitive data encrypted at rest (AES-256) with keys in a managed KMS.</li>
+          <li>All LLM calls logged; no customer data sent to external LLM APIs without a data processing agreement.</li>
+          <li>CSRF protection, CORS restricted to registered origins, rate limiting on sensitive write paths.</li>
+          <li>Per-tenant vector namespaces prevent cross-tenant retrieval.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Audit &amp; data governance</h2>
+        <ul class="stack" style="padding-left:1.1rem;margin:0">
+          <li>An append-only audit log records every user action, data access and system event.</li>
+          <li>Every AI decision logs the model, prompt version, response hash and confidence score.</li>
+          <li>Agent execution traces are stored with the full run for accountability and replay.</li>
+          <li>Evidence document hashes are captured at ingestion and verified on every audit package.</li>
+          <li>Tenant data is region-locked; cross-region replication only with explicit consent.</li>
+          <li>Hourly snapshots with point-in-time recovery for Postgres; scheduled graph backups.</li>
+        </ul>
+        <p class="footnote">In this demo the audit log is protected by a database trigger that blocks UPDATE and DELETE, and row-level security denies all browser-side access to the tables.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>Non-functional requirements</h2>
+      <div class="table-wrap" style="margin-top:16px">
+        <table>
+          <thead><tr><th>Category</th><th>Requirement</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td>Performance</td><td>Agent query response time (p95)</td><td>&lt; 8 s for standard queries</td></tr>
+            <tr><td>Performance</td><td>Graph traversal (5-hop)</td><td>&lt; 500 ms</td></tr>
+            <tr><td>Performance</td><td>Gap detection per regulation</td><td>&lt; 4 h from ingestion</td></tr>
+            <tr><td>Scalability</td><td>Regulatory documents processed</td><td>10,000+ per month per tenant</td></tr>
+            <tr><td>Scalability</td><td>Concurrent compliance queries</td><td>500+ simultaneous users</td></tr>
+            <tr><td>Reliability</td><td>API uptime</td><td>99.9% (&lt; 8.7 h downtime/year)</td></tr>
+            <tr><td>RAG quality</td><td>Retrieval precision on policy queries</td><td>Minimum 85% (target 91%)</td></tr>
+            <tr><td>Security</td><td>Encryption at rest and in transit</td><td>AES-256 / TLS 1.3</td></tr>
+            <tr><td>Compliance</td><td>Audit log retention</td><td>7 years, immutable, tamper-evident</td></tr>
+            <tr><td>Explainability</td><td>Every AI finding</td><td>Graph citation path and source document reference</td></tr>
+            <tr><td>Auditability</td><td>Every AI decision</td><td>Model, prompt version, response hash, confidence logged</td></tr>
+            <tr><td>Data residency</td><td>Customer data</td><td>Region-locked; no cross-border transfer without consent</td></tr>
+            <tr><td>Certifications</td><td>Security certifications</td><td>SOC 2 Type II, ISO 27001; HIPAA BAA available</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">These are production targets. The free-tier demo does not claim to meet them.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

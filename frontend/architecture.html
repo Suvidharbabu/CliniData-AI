@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture | CliniData AI</title>
+  <meta name="description" content="Six-layer architecture, technology stack and hybrid retrieval pipeline behind CliniData AI.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+  <script type="module">
+    import { renderBenchChart } from "/src/js/bench-chart.js";
+    renderBenchChart(document.getElementById("bench-chart"));
+  </script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Architecture</span>
+      <h1>Six layers, clean separation</h1>
+      <p class="lead">Each layer has one job, from ingesting regulations to governing every AI decision. The hybrid retrieval and adaptive
+        intelligence layer is what makes answers precise, not only plausible.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:start">
+      <div>
+        <h2>Architectural layers</h2>
+        <div class="layers" style="margin-top:16px">
+          <div class="layer"><span class="layer-tag">L1</span><div><h3>Data ingestion</h3><p>Regulations, SOPs, EHR/EDC metadata, SIEM logs and regulator feeds (FDA, EMA, HHS, EDPB, MeitY) through scheduled pipelines, with OCR for scanned guidance.</p></div></div>
+          <div class="layer"><span class="layer-tag">L2</span><div><h3>Graph RAG engine</h3><p>The compliance knowledge graph in Neo4j: multi-hop traversal across obligations, controls, evidence and risks.</p></div></div>
+          <div class="layer"><span class="layer-tag">L3</span><div><h3>Hybrid RAG &amp; adaptive intelligence</h3><p>Dense + sparse retrieval with HyDE expansion, RRF fusion, cross-encoder reranking and the adaptive instruction codebook.</p></div></div>
+          <div class="layer"><span class="layer-tag">L4</span><div><h3>Agentic orchestration</h3><p>A planning orchestrator routes work to specialist agents for gaps, constraints, cross-references, risk, audit and remediation.</p></div></div>
+          <div class="layer"><span class="layer-tag">L5</span><div><h3>Enterprise outputs</h3><p>Dashboards, gap reports, inspection-ready audit bundles, alerts, regulatory change watch, remediation board.</p></div></div>
+          <div class="layer"><span class="layer-tag">L6</span><div><h3>Cross-cutting</h3><p>RBAC, explainability, hallucination guards, data residency, MLOps/CI and human approval gates.</p></div></div>
+        </div>
+      </div>
+      <div>
+        <h2>Technology stack</h2>
+        <p class="muted small">"Live demo" marks what this site runs today; the rest is the production design.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Component</th><th>Technology</th><th>Live demo</th></tr></thead>
+            <tbody>
+              <tr><td>Graph database</td><td>Neo4j (AuraDB)</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Vector store</td><td>Pinecone, integrated embedding + hosted reranker</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Sparse search</td><td>Elasticsearch BM25 (production) · Postgres full-text (demo)</td><td><span class="badge badge-ok">Postgres FTS</span></td></tr>
+              <tr><td>LLM backbone</td><td>Claude (Anthropic API)</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Relational store &amp; auth</td><td>PostgreSQL + Supabase Auth</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Backend API</td><td>Python FastAPI</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Frontend</td><td>HTML5, CSS, JavaScript (Vite)</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Hosting</td><td>Vercel (static + serverless Python)</td><td><span class="badge badge-ok">Yes</span></td></tr>
+              <tr><td>Agent framework</td><td>LangGraph</td><td><span class="badge">Plain Python steps</span></td></tr>
+              <tr><td>Event streaming &amp; queues</td><td>Kafka, Celery + Redis, Airflow</td><td><span class="badge">Not in demo</span></td></tr>
+              <tr><td>Monitoring</td><td>Datadog, Prometheus, Grafana</td><td><span class="badge">Not in demo</span></td></tr>
+              <tr><td>Document OCR</td><td>AWS Textract</td><td><span class="badge">Not in demo</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <span class="eyebrow">Retrieval pipeline</span>
+      <h2>From a question to a cited, validated answer</h2>
+      <div class="flow" style="margin-top:20px">
+        <div class="flow-step"><strong>1 · HyDE</strong>Claude drafts a hypothetical policy passage, which is embedded instead of the bare question.</div>
+        <div class="flow-step"><strong>2 · Dense + sparse</strong>Pinecone top-20 (semantic) and full-text top-20 (exact terms, article numbers) run in parallel.</div>
+        <div class="flow-step"><strong>3 · RRF (k = 60)</strong>Reciprocal Rank Fusion merges both lists: score = Σ 1 / (60 + rank).</div>
+        <div class="flow-step"><strong>4 · Rerank</strong>A cross-encoder scores the top-20 against the question and keeps the best 10.</div>
+        <div class="flow-step"><strong>5 · Graph traversal</strong>Chunk node IDs seed Neo4j expansion to controls, evidence, risks and <code>MAPS_TO</code> peers.</div>
+        <div class="flow-step"><strong>6 · Context assembly</strong>The subgraph is serialised with node IDs, relationships and deterministic findings.</div>
+        <div class="flow-step"><strong>7 · Guard</strong>Every cited ID must exist in the subgraph; uncited claims are flagged before output.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Why hybrid</span>
+        <h2>Semantic recall plus exact terms</h2>
+        <p class="lead">Regulations turn on precise strings such as "§11.10(e)", "72 hours" and "7 calendar days", which semantic search alone blurs.
+          Internal SOPs paraphrase the same ideas in their own words, which keyword search alone misses. Each method covers the other's blind spot.</p>
+        <p class="footnote">Design-target benchmarks from the ECRIP v2.0 specification. The demo runs the same pipeline on a small fictional corpus
+          and does not reproduce these measurements.</p>
+      </div>
+      <div class="card">
+        <h3>Retrieval quality by configuration</h3>
+        <div id="bench-chart" style="margin-top:8px"></div>
+        <div class="table-wrap" style="margin-top:16px">
+          <table>
+            <thead><tr><th>Configuration</th><th class="num">Precision@10</th><th class="num">Recall@10</th><th class="num">Latency</th></tr></thead>
+            <tbody>
+              <tr><td>Dense only (Pinecone)</td><td class="num">74%</td><td class="num">69%</td><td class="num">~120 ms</td></tr>
+              <tr><td>Sparse only (BM25)</td><td class="num">61%</td><td class="num">58%</td><td class="num">~80 ms</td></tr>
+              <tr><td>Hybrid (RRF, no rerank)</td><td class="num">84%</td><td class="num">79%</td><td class="num">~200 ms</td></tr>
+              <tr><td><strong>Hybrid + rerank</strong></td><td class="num"><strong>91%</strong></td><td class="num"><strong>86%</strong></td><td class="num">~380 ms</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

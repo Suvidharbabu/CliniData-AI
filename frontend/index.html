@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CliniData AI | Clinical Compliance Intelligence</title>
+  <meta name="description" content="CliniData AI maps healthcare and life-sciences regulations to your controls with Graph RAG, hybrid retrieval and agentic AI, with human approval for every critical finding.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Graph RAG · Hybrid retrieval · Agentic AI</span>
+        <h1>Compliance intelligence for <span>clinical data</span>.</h1>
+        <p class="lead">CliniData AI connects HIPAA, GDPR health-data rules, 21 CFR Part 11, ICH GCP and India's DPDP Act to your
+          controls, evidence and risks in one knowledge graph. Specialist AI agents find the gaps, cite the exact obligation, and send
+          every critical finding to a human approver before anything changes.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/demo.html">Run a live gap analysis</a>
+          <a class="btn btn-secondary" href="/architecture.html">See how it works</a>
+        </div>
+      </div>
+      <div class="card" aria-label="Example finding">
+        <div class="card-header"><strong>Example finding</strong><span class="badge badge-CRITICAL">CRITICAL</span></div>
+        <p class="small muted" style="margin-bottom:10px">Query: "Which controls cover breach notification across HIPAA and GDPR?"</p>
+        <p style="margin-bottom:10px">Breach procedure <code>CTL-IR-01</code> commits to notification within <strong>30 days</strong>. That meets HIPAA
+          §164.404's 60-day limit but misses <strong>GDPR Art. 33</strong> and <strong>DPDP §8(6)</strong>, which both require 72 hours.</p>
+        <div class="chips small">
+          <span class="badge badge-accent">Compound obligation</span>
+          <span class="badge">Residual risk 5.0 / 25</span>
+          <span class="badge badge-primary">Awaiting CCO approval</span>
+        </div>
+        <p class="footnote">From the live demo's fictional tenant. Each claim links to a node in the graph.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><div class="stat-value">91%</div><div class="stat-label">retrieval precision@10 with hybrid search + reranking, vs 74% dense-only</div></div>
+        <div class="stat"><div class="stat-value">+24 pts</div><div class="stat-label">gap-detection precision from domain-routed instructions vs a generic prompt</div></div>
+        <div class="stat"><div class="stat-value">34%</div><div class="stat-label">of regulatory findings come from cross-regulation obligations that single-framework reviews miss</div></div>
+        <div class="stat"><div class="stat-value">Weeks → hours</div><div class="stat-label">target for a full regulatory gap review</div></div>
+      </div>
+      <p class="footnote">Figures are design targets from the ECRIP v2.0 platform specification that CliniData AI is built on, not independently measured results.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="center">
+        <span class="eyebrow">Why a graph</span>
+        <h2>Compliance questions are multi-hop questions</h2>
+        <p class="lead">"Are we covered for GDPR Article 32?" means following a chain: regulation → obligation → control → evidence → risk → asset.
+          Flat vector search returns loose paragraphs. A knowledge graph returns the whole chain, with an ID at every step you can cite and audit.</p>
+      </div>
+      <div class="grid grid-3" style="margin-top:32px">
+        <div class="card"><div class="card-icon">◎</div><h3>Typed knowledge graph</h3>
+          <p class="muted">Seven node types (Regulation, Obligation, Control, Risk, Asset, Entity, Evidence) linked by typed relationships, including <code>MAPS_TO</code> between equivalent obligations in different frameworks.</p></div>
+        <div class="card"><div class="card-icon">⇄</div><h3>Hybrid retrieval</h3>
+          <p class="muted">Dense semantic search catches paraphrased policy language. Keyword search catches exact article numbers and deadlines. Rank fusion and a reranker combine the two.</p></div>
+        <div class="card"><div class="card-icon">✓</div><h3>Grounded, approved output</h3>
+          <p class="muted">Every AI claim must cite a graph node or it gets flagged. CRITICAL and HIGH gaps wait for a CCO or senior compliance manager before any remediation starts.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <span class="eyebrow">How a gap analysis runs</span>
+      <h2>Six phases, each one logged</h2>
+      <ol class="steps grid-2" style="display:grid;margin-top:24px">
+        <li><strong>Plan &amp; route</strong><span class="muted">The orchestrator reads the question, scopes the frameworks and articles, and picks 4–6 domain instructions from the adaptive codebook.</span></li>
+        <li><strong>Retrieve</strong><span class="muted">A hypothetical policy passage (HyDE) drives dense search in Pinecone while full-text search runs in parallel; results are merged with RRF and reranked.</span></li>
+        <li><strong>Traverse</strong><span class="muted">Retrieved nodes seed a multi-hop Neo4j traversal that pulls in controls, evidence, risks and cross-framework equivalents.</span></li>
+        <li><strong>Verify</strong><span class="muted">Gap Mapper, Constraint Verifier and Cross-Reference agents check coverage, evidence, deadlines (e.g. 72 h vs 60 days) and compound obligations.</span></li>
+        <li><strong>Report</strong><span class="muted">Claude writes a cited analysis, and a hallucination guard rejects any node ID that is not in the retrieved subgraph.</span></li>
+        <li><strong>Approve</strong><span class="muted">CRITICAL gaps go to the CCO and HIGH gaps to a senior compliance manager. Once approved, remediation tasks are created with deadlines.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2" style="align-items:center">
+        <div>
+          <span class="eyebrow">Frameworks in the demo</span>
+          <h2>Built for regulated clinical data</h2>
+          <p class="lead">Hospitals, CROs, sponsors and pharmacovigilance teams handle several regimes at once. CliniData AI links their obligations so that
+            a control is judged against every framework it serves, not only the one it was written for.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">HIPAA Security Rule</span><span class="chip">HIPAA Privacy &amp; Breach Notification</span>
+          <span class="chip">GDPR Art. 9 · 15 · 28 · 32 · 33 · 35</span><span class="chip">21 CFR Part 11</span>
+          <span class="chip">ICH E6(R3) GCP</span><span class="chip">ICH E2A safety reporting</span>
+          <span class="chip">DPDP Act 2023</span><span class="chip">ISO/IEC 27001:2022</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-band">
+        <h2>Try it on a fictional clinical research organisation</h2>
+        <p>Sign in, ask a question such as "Show all HIPAA §164.312 gaps", and watch every agent step, citation and approval gate as it runs.</p>
+        <div class="btn-row"><a class="btn btn-primary" href="/demo.html">Open the demo</a><a class="btn btn-secondary" href="/contact.html">Request a walkthrough</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

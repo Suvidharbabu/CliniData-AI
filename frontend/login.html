@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | CliniData AI</title>
+  <meta name="description" content="Sign in to the CliniData AI live demo.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+  <script type="module" src="/src/js/login.js"></script>
+</head>
+<body>
+<main>
+  <section class="section">
+    <div class="container" style="max-width:460px">
+      <div class="card">
+        <h1 style="font-size:1.6rem">Sign in to the demo</h1>
+        <p class="muted small">The demo runs on a fictional clinical research organisation. Create a free account to try it; each account gets its own run history and approval queue.</p>
+        <div class="btn-row" role="tablist" style="margin:14px 0 18px">
+          <button class="btn btn-secondary btn-sm" role="tab" aria-selected="true" id="tab-signin" type="button">Sign in</button>
+          <button class="btn btn-ghost btn-sm" role="tab" aria-selected="false" id="tab-signup" type="button">Create account</button>
+        </div>
+        <form id="auth-form" class="stack" novalidate>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" required autocomplete="email"></div>
+          <div class="field"><label for="password">Password</label><input id="password" type="password" required minlength="8" autocomplete="current-password"></div>
+          <div id="auth-alert" class="alert" hidden></div>
+          <button class="btn btn-primary" type="submit" id="auth-submit" style="width:100%">Sign in</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Platform | CliniData AI</title>
+  <meta name="description" content="CliniData AI platform modules, the compliance knowledge graph schema, and why Graph RAG beats flat RAG for clinical compliance.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Platform</span>
+      <h1>One graph for every clinical obligation</h1>
+      <p class="lead">CliniData AI is a living knowledge graph that links regulatory obligations, internal controls, assets, risks and evidence.
+        The modules below read from and write to that graph.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Core modules</h2>
+      <p class="muted">P0 = foundation, P1 = core enterprise workflow, P2 = integrations.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Module</th><th>Key capabilities</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td><strong>User &amp; access management</strong></td><td>RBAC (Admin, CCO, Compliance Officer, Auditor, Read-only), SSO/SAML, MFA, audit log</td><td>P0</td></tr>
+            <tr><td><strong>Regulatory library</strong></td><td>Ingest and version HIPAA, GDPR, Part 11, ICH, DPDP and more; map obligations; track amendments</td><td>P0</td></tr>
+            <tr><td><strong>Control registry</strong></td><td>Create and manage controls, map them to obligations, track implementation status and owners</td><td>P0</td></tr>
+            <tr><td><strong>Risk register</strong></td><td>Manage risks, link them to clinical assets and obligations, score likelihood × impact</td><td>P0</td></tr>
+            <tr><td><strong>Graph RAG engine</strong></td><td>Knowledge graph CRUD, hybrid retrieval, multi-hop query API</td><td>P0</td></tr>
+            <tr><td><strong>Adaptive instruction codebook</strong></td><td>Domain instructions, semantic routing, EMA success tracking, version control</td><td>P0</td></tr>
+            <tr><td><strong>Agentic query interface</strong></td><td>Natural-language compliance questions, multi-agent execution, cited responses</td><td>P0</td></tr>
+            <tr><td><strong>Compliance dashboard</strong></td><td>Risk heatmaps, gap summary, control status, obligation coverage</td><td>P1</td></tr>
+            <tr><td><strong>Audit package generator</strong></td><td>Evidence bundles with hash verification, exported to PDF/XLSX for inspections</td><td>P1</td></tr>
+            <tr><td><strong>Regulatory change monitor</strong></td><td>Subscribe to FDA, EMA, HHS, EDPB and MeitY updates; detect changes; run impact analysis</td><td>P1</td></tr>
+            <tr><td><strong>Remediation workflow</strong></td><td>Automated remediation tasks, deadline tracking, policy update templates</td><td>P1</td></tr>
+            <tr><td><strong>Human approval module</strong></td><td>Structured approvals, role-based authorisation, escalation, immutable decision log</td><td>P1</td></tr>
+            <tr><td><strong>Reporting &amp; analytics</strong></td><td>Gap reports, risk trends, control effectiveness over time, compliance scorecards</td><td>P1</td></tr>
+            <tr><td><strong>Alert &amp; notification engine</strong></td><td>Threshold alerts, escalation routing, Jira/Slack/email delivery</td><td>P2</td></tr>
+            <tr><td><strong>Integration hub</strong></td><td>Connectors for EHR, EDC, eTMF, safety databases, SIEM, GRC tools and document stores</td><td>P2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <span class="eyebrow">Knowledge graph schema</span>
+      <h2>Seven node types, typed relationships</h2>
+      <div class="grid grid-2" style="align-items:start;margin-top:20px">
+        <div class="card">
+          <svg class="chart" viewBox="0 0 520 330" role="img" aria-labelledby="schema-title">
+            <title id="schema-title">Compliance knowledge graph schema</title>
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 10 5 0 10z" fill="var(--border-strong)"/>
+              </marker>
+            </defs>
+            <g stroke="var(--border-strong)" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+              <path d="M110 60 H212"/>
+              <path d="M318 60 H406"/>
+              <path d="M459 80 V148"/>
+              <path d="M266 150 V82"/>
+              <path d="M214 173 H120"/>
+              <path d="M64 196 V248"/>
+              <path d="M510 60 C519 60 519 272 512 272"/>
+              <path d="M244 40 C244 6 288 6 288 38" stroke-dasharray="4 3"/>
+            </g>
+            <g font-size="10" style="fill:var(--text-muted)">
+              <text x="162" y="52" text-anchor="middle">HAS_OBLIGATION</text>
+              <text x="363" y="52" text-anchor="middle">SATISFIED_BY</text>
+              <text x="452" y="120" text-anchor="end">EVIDENCED_BY</text>
+              <text x="272" y="120">THREATENS</text>
+              <text x="132" y="166">AFFECTS</text>
+              <text x="70" y="228">OWNED_BY</text>
+              <text x="296" y="16">MAPS_TO</text>
+            </g>
+            <g font-size="13" font-weight="650" text-anchor="middle">
+              <rect x="10" y="40" width="100" height="40" rx="9" fill="var(--node-regulation)"/><text x="60" y="65" style="fill:var(--node-text)">Regulation</text>
+              <rect x="214" y="40" width="104" height="40" rx="9" fill="var(--node-obligation)"/><text x="266" y="65" style="fill:var(--node-text)">Obligation</text>
+              <rect x="408" y="40" width="102" height="40" rx="9" fill="var(--node-control)"/><text x="459" y="65" style="fill:var(--node-text)">Control</text>
+              <rect x="408" y="150" width="102" height="46" rx="9" fill="var(--node-evidence)"/><text x="459" y="178" style="fill:var(--node-text)">Evidence</text>
+              <rect x="214" y="150" width="104" height="46" rx="9" fill="var(--node-risk)"/><text x="266" y="178" style="fill:var(--node-text)">Risk</text>
+              <rect x="10" y="150" width="108" height="46" rx="9" fill="var(--node-asset)"/><text x="64" y="178" style="fill:var(--node-text)">Asset</text>
+              <rect x="10" y="250" width="500" height="44" rx="9" fill="var(--surface-2)" stroke="var(--border-strong)"/><text x="260" y="277" style="fill:var(--text)">Entity (department, legal entity, third party)</text>
+            </g>
+          </svg>
+          <p class="footnote">Risk <code>THREATENS</code> Obligation · Risk <code>AFFECTS</code> Asset · Control <code>PROTECTS</code> Asset (not drawn) ·
+            Regulation <code>SUPERSEDES</code> Regulation for amendments.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Node</th><th>Key properties</th><th>Clinical example</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Regulation</strong></td><td>name, jurisdiction, version, effective date</td><td>21 CFR Part 11</td></tr>
+              <tr><td><strong>Obligation</strong></td><td>article ref, text, type, severity, deadline</td><td>§11.10(e) audit trails</td></tr>
+              <tr><td><strong>Control</strong></td><td>type, status, owner, SLA, effectiveness</td><td>EDC audit trail review</td></tr>
+              <tr><td><strong>Risk</strong></td><td>category, likelihood, impact, residual score</td><td>Late fatal-SUSAR reporting</td></tr>
+              <tr><td><strong>Asset</strong></td><td>type, data classification, owner, location</td><td>Safety database</td></tr>
+              <tr><td><strong>Entity</strong></td><td>type, jurisdiction</td><td>Drug Safety &amp; PV team, CRO</td></tr>
+              <tr><td><strong>Evidence</strong></td><td>document ref, timestamp, verifier, hash</td><td>Validation test scripts</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Graph RAG vs flat RAG</span>
+      <h2>Why flat vector search is not enough</h2>
+      <div class="table-wrap" style="margin-top:20px">
+        <table>
+          <thead><tr><th>Capability</th><th>Flat vector RAG</th><th>CliniData AI Graph RAG</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Retrieval unit</strong></td><td>Isolated text chunks</td><td>Typed nodes with typed relationships</td></tr>
+            <tr><td><strong>Multi-hop reasoning</strong></td><td>Not supported</td><td>Native: Obligation → Control → Evidence → Risk</td></tr>
+            <tr><td><strong>Cross-framework gaps</strong></td><td>Cannot detect</td><td><code>MAPS_TO</code> edges link HIPAA, GDPR, DPDP and ISO equivalents</td></tr>
+            <tr><td><strong>Citation grounding</strong></td><td>Chunk source only</td><td>Node ID + relationship path + source document</td></tr>
+            <tr><td><strong>Hallucination guard</strong></td><td>None</td><td>Every citation validated against the retrieved subgraph</td></tr>
+            <tr><td><strong>Temporal versioning</strong></td><td>Static snapshot</td><td><code>SUPERSEDES</code> edges track amendments (e.g. ICH E6(R2) → E6(R3))</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

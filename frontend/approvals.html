@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Approvals | CliniData AI</title>
+  <meta name="description" content="Human-in-the-loop approval queue and remediation tasks for the CliniData AI demo.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+  <script type="module" src="/src/js/approvals.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero" style="padding-bottom:20px">
+    <div class="container">
+      <span class="eyebrow">Human-in-the-loop</span>
+      <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Approval queue</h1>
+      <p class="lead">CRITICAL gaps need the CCO, and HIGH gaps need a compliance manager or the CCO. Switch your demo role to try each path.
+        Decisions are final and are written to the audit log.</p>
+      <div class="session-bar" id="session-bar" style="margin-top:16px"><span class="spinner" aria-hidden="true"></span> Loading your session…</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:28px">
+    <div class="container">
+      <div class="card-header">
+        <div class="tabs" role="tablist">
+          <button class="btn btn-secondary btn-sm" data-tab="open" role="tab" aria-selected="true" type="button">Open</button>
+          <button class="btn btn-ghost btn-sm" data-tab="decided" role="tab" aria-selected="false" type="button">Decided</button>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="/demo.html">← Back to the demo</a>
+      </div>
+      <div id="approvals" class="grid" style="gap:14px"><p class="muted">Loading…</p></div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>Remediation tasks</h2>
+      <p class="muted">Created by the Remediation Planner when a gap is approved.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Priority</th><th>Task</th><th>Deadline</th><th>Status</th></tr></thead>
+          <tbody id="tasks"><tr><td colspan="4" class="muted">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

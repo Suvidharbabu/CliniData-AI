@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adaptive Codebook | CliniData AI</title>
+  <meta name="description" content="The adaptive instruction codebook: domain-specific compliance reasoning instructions routed by semantic similarity and improved by reviewer feedback.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script type="module" src="/src/js/main.js"></script>
+  <script type="module" src="/src/js/codebook.js"></script>
+</head>
+<body>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Adaptive instruction codebook</span>
+      <h1>Domain reasoning, not one generic prompt</h1>
+      <p class="lead">Instead of one catch-all compliance prompt, CliniData AI keeps a library of atomic, versioned reasoning instructions. Each query
+        is routed to the most relevant few, and reviewer feedback raises or lowers their weight over time.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:start">
+      <div>
+        <h2>How routing works</h2>
+        <ol class="steps" style="margin-top:16px">
+          <li><strong>Embed</strong><span class="muted">The query (or regulation summary) is embedded with the same model as the retrieval pipeline.</span></li>
+          <li><strong>Match</strong><span class="muted">Cosine similarity against the per-tenant instruction namespace in Pinecone returns the closest candidates.</span></li>
+          <li><strong>Blend</strong><span class="muted">Candidates are scored by similarity × (0.7 + 0.3 × success rate), and the top 5 are composed into the prompt.</span></li>
+          <li><strong>Learn</strong><span class="muted">Reviewer feedback updates each instruction's success rate as an exponential moving average, s ← 0.8·s + 0.2·outcome, with no retraining.</span></li>
+          <li><strong>Govern</strong><span class="muted">Instructions that fall below 0.4 are flagged for review and can be rolled back to an earlier version.</span></li>
+        </ol>
+      </div>
+      <div>
+        <h2>Domain coverage</h2>
+        <p class="muted small">The production design targets 96 instructions. The demo ships a 20-instruction clinical subset.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Domain</th><th>Example instruction types</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Clinical data protection</strong></td><td>ePHI safeguard mapping, addressable specifications, encryption by device class, risk-analysis currency</td></tr>
+              <tr><td><strong>Trial reporting</strong></td><td>Clock-start definitions, strictest-deadline rule, essential records, quality by design</td></tr>
+              <tr><td><strong>Pharmacovigilance</strong></td><td>7- vs 15-day expedited tracks, day-zero discipline, safety database integrity, partner case exchange</td></tr>
+              <tr><td><strong>Health privacy</strong></td><td>Breach timeline cross-check, lawful basis for health data, children's data, access-request SLAs, DPIAs</td></tr>
+              <tr><td><strong>Quality systems (Part 11 / GxP)</strong></td><td>Audit-trail review, validation after change, evidence completeness, e-signature linkage</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="footnote">The specification targets a 24-percentage-point gain in gap-detection precision over a single generic prompt (a design target, not a demo measurement).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="card-header"><h2>Live codebook</h2><span class="muted small" id="codebook-status">Loading…</span></div>
+      <p class="muted">Success rates change as demo users rate their results.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Domain</th><th>Instruction</th><th class="num">Success rate</th></tr></thead>
+          <tbody id="codebook-rows"><tr><td colspan="4" class="muted">Loading instructions…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

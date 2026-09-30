@@ -1,0 +1,9 @@
+fastapi>=0.115
+pydantic[email]>=2.8
+pydantic-settings>=2.4
+psycopg[binary]>=3.2
+psycopg-pool>=3.2
+neo4j>=5.25
+pinecone>=7.0
+anthropic>=1.0
+pyjwt[crypto]>=2.9
