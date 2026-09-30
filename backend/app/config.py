@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     daily_query_limit: int = 20
 
     @property
+    def llm_enabled(self) -> bool:
+        return bool(self.anthropic_api_key.strip())
+
+    @property
     def origins(self) -> list[str]:
         return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
 

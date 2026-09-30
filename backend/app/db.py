@@ -4,6 +4,7 @@ The pooler (port 6543) does not support server-side prepared statements, so
 `prepare_threshold=None` is required. The pool is opened lazily so that a cold
 serverless start does not pay for connections it never uses.
 """
+import atexit
 from contextlib import contextmanager
 from typing import Any, Iterator
 
@@ -26,6 +27,7 @@ def _get_pool() -> ConnectionPool:
             open=True,
             timeout=10,
         )
+        atexit.register(_pool.close)
     return _pool
 
 

@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from psycopg.types.json import Jsonb
 
 from .. import db
+from ..config import get_settings
 from . import codebook, gaps as gap_rules, graph_expand, guard, llm, retrieval
 
 
@@ -24,6 +25,8 @@ class Trace:
 
 
 def _safe_hyde(query: str) -> tuple[str, str | None]:
+    if not get_settings().llm_enabled:
+        return "", "skipped: no ANTHROPIC_API_KEY configured, dense search uses the raw question"
     try:
         return llm.hyde(query), None
     except Exception as exc:  # HyDE is an optimisation; fall back to the raw query
@@ -92,9 +95,13 @@ def _execute(run_id: str, user_id: str, query: str, trace: Trace) -> dict:
 
     # 8. Regulatory Reporter (Claude)
     t = time.perf_counter()
-    context = llm.build_context(sub, found, chunks)
-    report = llm.answer(query, context, instructions)
-    trace.record("Regulatory Reporter", "Wrote the cited analysis with Claude", t,
+    if get_settings().llm_enabled:
+        report = llm.answer(query, llm.build_context(sub, found, chunks), instructions)
+        action = "Wrote the cited analysis with Claude"
+    else:
+        report = llm.template_answer(query, sub, found)
+        action = "Wrote the cited analysis with the rule-based reporter (Claude not configured)"
+    trace.record("Regulatory Reporter", action, t,
                  model=report["model"], stop_reason=report["stop_reason"], usage=report["usage"])
     answer_text = report["text"] or (
         "The model declined to answer this request. The deterministic findings below are still valid."

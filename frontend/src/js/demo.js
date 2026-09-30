@@ -135,7 +135,7 @@ function stepDetail(s) {
   if (s.gaps !== undefined) parts.push(`${s.gaps} coverage/evidence gaps`);
   if (s.violations !== undefined) parts.push(`${s.violations} deadline violations`);
   if (s.compound !== undefined) parts.push(`${s.compound} compound obligations`);
-  if (s.model) parts.push(`${s.model} · ${s.usage?.input_tokens ?? "?"} in / ${s.usage?.output_tokens ?? "?"} out tokens${s.stop_reason === "refusal" ? " · declined" : ""}`);
+  if (s.model) parts.push(s.usage?.input_tokens ? `${s.model} · ${s.usage.input_tokens} in / ${s.usage.output_tokens} out tokens${s.stop_reason === "refusal" ? " · declined" : ""}` : s.model);
   if (s.passed !== undefined) parts.push(s.passed ? "all citations grounded" : `flagged: ${s.unknown.join(", ") || "low grounding"}`);
   if (s.approvals !== undefined) parts.push(`${s.approvals} approval requests created`);
   if (s.error) parts.push(`error: ${s.error}`);
@@ -168,7 +168,10 @@ function renderAnswer(result) {
     <span class="badge">${Math.round(g.grounding_ratio * 100)}% of claims cited</span>
     ${g.unknown_ids.length ? `<span class="badge badge-CRITICAL">${g.unknown_ids.length} unknown ID(s)</span>` : ""}
     <span class="badge badge-accent">${escapeHtml(result.model || "")}</span>`;
-  $("answer").innerHTML = renderMarkdown(result.answer, g.unknown_ids) +
+  const ruleBased = String(result.model || "").startsWith("rule-based");
+  $("answer").innerHTML = (ruleBased
+    ? '<p class="alert alert-info small">Claude is not connected on this deployment, so this report was written by the deterministic rule-based reporter from the same graph findings. Retrieval, graph traversal, the agents, the guard and approvals all ran as normal.</p>'
+    : "") + renderMarkdown(result.answer, g.unknown_ids) +
     (g.uncited_examples.length ? `<p class="footnote">Uncited statements: ${g.uncited_examples.map((u) => `"${escapeHtml(u)}"`).join("; ")}</p>` : "");
   $("feedback").querySelectorAll("button").forEach((b) => { b.disabled = false; });
 }

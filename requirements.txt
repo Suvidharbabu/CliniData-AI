@@ -7,3 +7,4 @@ neo4j>=5.25
 pinecone>=7.0
 anthropic>=1.0
 pyjwt[crypto]>=2.9
+certifi>=2024.8

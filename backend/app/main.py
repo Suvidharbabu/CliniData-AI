@@ -39,20 +39,15 @@ def _check(name: str, fn) -> tuple[str, str]:
         return name, f"error: {type(exc).__name__}: {str(exc)[:200]}"
 
 
-def _anthropic_configured() -> None:
-    if not get_settings().anthropic_api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY not set")
-
-
 @app.get("/api/ready")
 def ready() -> JSONResponse:
     checks = {
         "postgres": lambda: db.fetch_one("select 1"),
         "neo4j": lambda: graph.driver().verify_connectivity(),
         "pinecone": lambda: vector.index().describe_index_stats(),
-        "anthropic": _anthropic_configured,
     }
     with ThreadPoolExecutor(max_workers=len(checks)) as pool:
         results = dict(pool.map(lambda kv: _check(*kv), checks.items()))
     ok = all(v == "ok" for v in results.values())
+    results["anthropic"] = "ok" if get_settings().llm_enabled else "not configured (rule-based reporter in use)"
     return JSONResponse({"ready": ok, "checks": results}, status_code=200 if ok else 503)

@@ -82,6 +82,64 @@ def answer(query: str, context: str, instructions: list[dict]) -> dict:
     }
 
 
+RULE_BASED_MODEL = "rule-based reporter (no LLM)"
+
+REMEDIATION_HINTS = {
+    "DEADLINE_VIOLATION": "shorten the committed timeline in {controls} to meet {deadline}, and align the SOP clock-start with the regulator's trigger",
+    "NO_CONTROL": "design and assign an owner for a new control, then collect first evidence",
+    "CONTROL_NOT_EFFECTIVE": "complete implementation of {controls} with a dated delivery plan",
+    "MISSING_EVIDENCE": "collect and verify operating evidence for {controls}",
+    "PARTIAL_COVERAGE": "finish rolling out {controls} across every in-scope asset",
+}
+
+
+def template_answer(query: str, sub: dict, gaps: list[dict]) -> dict:
+    """Deterministic, fully cited report used when no Anthropic API key is configured."""
+    obligations = sub["obligations"]
+    frameworks = sorted({o["framework"] for o in obligations.values()})
+    if not obligations:
+        text = ("No obligations in the knowledge graph matched this question. Try naming a framework or article, "
+                "for example HIPAA §164.312 or GDPR Art. 33.")
+        return {"text": text, "model": RULE_BASED_MODEL, "stop_reason": "end_turn", "usage": {}}
+
+    counts = {s: sum(1 for g in gaps if g["severity"] == s) for s in ("CRITICAL", "HIGH", "MEDIUM", "LOW")}
+    summary_ids = ", ".join(list(obligations)[:3])
+    if gaps:
+        mix = ", ".join(f"{n} {s}" for s, n in counts.items() if n)
+        compound = sum(1 for g in gaps if g["compound_with"])
+        lines = [
+            f"Analysed {len(obligations)} obligations across {', '.join(frameworks)} and found {len(gaps)} gaps ({mix}) [{summary_ids}].",
+            f"{compound} of them are compound obligations that a single-framework review would miss, and every CRITICAL "
+            f"or HIGH finding is routed to a human approver [{gaps[0]['obligation_id']}]." if compound else
+            f"Every CRITICAL or HIGH finding below is routed to a human approver before any remediation [{gaps[0]['obligation_id']}].",
+            "",
+            "## Findings",
+        ]
+    else:
+        lines = [f"Analysed {len(obligations)} obligations across {', '.join(frameworks)}; every one has an implemented, "
+                 f"evidenced control that meets its deadlines [{summary_ids}].", "", "## Findings",
+                 f"- No gaps were found for the obligations in scope [{summary_ids}]."]
+
+    for g in gaps[:10]:
+        cites = ", ".join([g["obligation_id"], *g["control_ids"][:3], *g["risk_ids"][:2]])
+        compound = (f" Compound with {', '.join(obligations[p]['framework'] + ' ' + obligations[p]['article_ref'] for p in g['compound_with'])}."
+                    if g["compound_with"] else "")
+        lines.append(f"- **{g['severity']}** {g['framework']} {g['article_ref']} ({g['title']}): {g['summary']} "
+                     f"{g['detail']}{compound} Residual risk {g['risk_score']}/25 [{cites}].")
+    if len(gaps) > 10:
+        lines.append(f"- {len(gaps) - 10} further lower-severity findings are listed in the findings table [{gaps[10]['obligation_id']}].")
+
+    if gaps:
+        lines += ["", "## Recommended remediation"]
+        for g in gaps[:6]:
+            obl = obligations[g["obligation_id"]]
+            hint = REMEDIATION_HINTS.get(g["gap_type"], REMEDIATION_HINTS["NO_CONTROL"]).format(
+                controls=", ".join(g["control_ids"]) or "the mapped control",
+                deadline=obl.get("deadline_label") or "the statutory deadline")
+            lines.append(f"- For {g['framework']} {g['article_ref']}: {hint} [{', '.join([g['obligation_id'], *g['control_ids'][:2]])}].")
+    return {"text": "\n".join(lines), "model": RULE_BASED_MODEL, "stop_reason": "end_turn", "usage": {}}
+
+
 def build_context(sub: dict, gaps: list[dict], chunks: list[dict]) -> str:
     """Serialise the subgraph into a compact, ID-labelled context block."""
     lines = ["## Regulations"]

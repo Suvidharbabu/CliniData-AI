@@ -34,10 +34,10 @@ def sparse_search(query: str, top_k: int = CANDIDATES) -> list[dict]:
     rows = db.fetch_all(
         """
         select c.id, c.text, c.source_node_id as node_id, c.node_type, c.framework,
-               ts_rank_cd(c.tsv, q) as score
+               ts_rank_cd(c.tsv, s.q) as score
         from doc_chunks c,
-             nullif(replace(plainto_tsquery('english', %s)::text, '&', '|'), '')::tsquery q
-        where c.tsv @@ q
+             (select nullif(replace(plainto_tsquery('english', %s)::text, '&', '|'), '')::tsquery as q) s
+        where c.tsv @@ s.q
         order by score desc
         limit %s
         """,
