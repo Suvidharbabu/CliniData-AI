@@ -24,6 +24,7 @@ def _get_pool() -> ConnectionPool:
             max_size=5,
             kwargs={"prepare_threshold": None, "row_factory": dict_row, "autocommit": True},
             open=True,
+            timeout=10,
         )
     return _pool
 
