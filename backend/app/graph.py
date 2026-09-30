@@ -20,5 +20,5 @@ def driver() -> Driver:
 
 
 def run(cypher: str, **params) -> list[dict]:
-    records, _, _ = driver().execute_query(cypher, params, database_="neo4j")
+    records, _, _ = driver().execute_query(cypher, params, database_=get_settings().neo4j_database or None)
     return [r.data() for r in records]
